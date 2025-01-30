@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/chat_db
+      username: mongoose
+      password: mongoose
+      authentication-database: admin
+
+logging:
+  level:
+    root: INFO
+    org.springframework.data.mongodb.core: DEBUG
