@@ -1,0 +1,8 @@
+server:
+  servlet:
+    context-path: /api/v1.0.0/notification-service
+  port: 9898
+
+spring:
+  application:
+    name: notification-service

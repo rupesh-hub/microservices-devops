@@ -6,6 +6,18 @@
       <list>
         <option value="$PROJECT_DIR$/CART-SERVICE/pom.xml" />
         <option value="$PROJECT_DIR$/CHAT-SERVICE/pom.xml" />
+        <option value="$PROJECT_DIR$/AUTHORIZATION-SERVER/pom.xml" />
+        <option value="$PROJECT_DIR$/CONFIG-SERVER/pom.xml" />
+        <option value="$PROJECT_DIR$/DISCOVERY-SERVER/pom.xml" />
+        <option value="$PROJECT_DIR$/GATEWAY-SERVICE/pom.xml" />
+        <option value="$PROJECT_DIR$/INVENTORY-SERVICE/pom.xml" />
+        <option value="$PROJECT_DIR$/NOTIFICATION-SERVICE/pom.xml" />
+        <option value="$PROJECT_DIR$/ORDERR-SERVICE/pom.xml" />
+        <option value="$PROJECT_DIR$/PAYMENT-SERVICE/pom.xml" />
+        <option value="$PROJECT_DIR$/ORDER-SERVICE/pom.xml" />
+        <option value="$PROJECT_DIR$/REVIEW-SERVICE/pom.xml" />
+        <option value="$PROJECT_DIR$/SHIPPING-SERVICE/pom.xml" />
+        <option value="$PROJECT_DIR$/USER-SERVICE/pom.xml" />
       </list>
     </option>
   </component>

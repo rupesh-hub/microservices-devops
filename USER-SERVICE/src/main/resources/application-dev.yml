@@ -1,0 +1,8 @@
+server:
+  port: 9198
+  servlet:
+    context-path: /api/v1.0.0/user-service
+
+spring:
+  application:
+    name: user-service

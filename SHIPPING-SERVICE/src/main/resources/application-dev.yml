@@ -1,0 +1,8 @@
+server:
+  port: 9092
+  servlet:
+    context-path: /api/v1.0.0/shipping-service
+
+spring:
+  application:
+    name: shipping-service

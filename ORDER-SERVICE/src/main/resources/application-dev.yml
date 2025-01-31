@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: order-service
+
+server:
+  port: 9595
+  servlet:
+    context-path: /api/v1.0.0/order-service

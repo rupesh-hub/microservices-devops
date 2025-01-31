@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/AUTHORIZATION-SERVER/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/CART-SERVICE/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/CHAT-SERVICE/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/CONFIG-SERVER/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/DISCOVERY-SERVER/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/GATEWAY-SERVICE/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/INVENTORY-SERVICE/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ORDER-SERVICE/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/PAYMENT-SERVICE/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/REVIEW-SERVICE/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SHIPPING-SERVICE/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/USER-SERVICE/src/main/java" charset="UTF-8" />
   </component>
 </project>

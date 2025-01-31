@@ -2,19 +2,50 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="AUTHORIZATION-SERVER" />
         <module name="CART-SERVICE" />
+        <module name="DISCOVERY-SERVER" />
+        <module name="ORDER-SERVICE" />
+        <module name="INVENTORY-SERVICE" />
+        <module name="CONFIG-SERVER" />
+        <module name="GATEWAY-SERVICE" />
+        <module name="NOTIFICATION-SERVICE" />
         <module name="CHAT-SERVICE" />
+      </profile>
+      <profile name="Annotation profile for USER-SERVICE" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+        </processorPath>
+        <module name="REVIEW-SERVICE" />
+        <module name="PAYMENT-SERVICE" />
+        <module name="SHIPPING-SERVICE" />
+        <module name="USER-SERVICE" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="AUTHORIZATION-SERVER" options="-parameters" />
       <module name="CART-SERVICE" options="-parameters" />
       <module name="CHAT-SERVICE" options="-parameters" />
+      <module name="CONFIG-SERVER" options="-parameters" />
+      <module name="DISCOVERY-SERVER" options="-parameters" />
+      <module name="GATEWAY-SERVICE" options="-parameters" />
+      <module name="INVENTORY-SERVICE" options="-parameters" />
+      <module name="NOTIFICATION-SERVICE" options="-parameters" />
+      <module name="ORDER-SERVICE" options="-parameters" />
+      <module name="PAYMENT-SERVICE" options="-parameters" />
+      <module name="REVIEW-SERVICE" options="-parameters" />
+      <module name="SHIPPING-SERVICE" options="-parameters" />
+      <module name="USER-SERVICE" options="-parameters" />
     </option>
   </component>
   <component name="TypeScriptCompiler">

@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: review-service
+
+server:
+  port: 9990
+  servlet:
+    context-path: /api/v1.0.0/review-service
