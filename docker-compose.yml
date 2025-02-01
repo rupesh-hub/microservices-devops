@@ -1,31 +1,32 @@
 version: "3.8"
+
 services:
 
-#  mongo-service:
-#    container_name: mongo-service
-#    image: mongo:latest
-#    ports:
-#      - '27017:27017'
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: admin
-#      MONGO_INITDB_ROOT_PASSWORD: admin
-#    networks:
-#      - microservices-devops
-#    restart: always
-#
-#  mongo-express:
-#    container_name: mongo-express
-#    image: mongo-express:latest
-#    ports:
-#      - '8081:8081'
-#    environment:
-#      ME_CONFIG_MONGODB_SERVER: mongo
-#      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
-#      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
-#    networks:
-#      - microservices-devops
-#    restart: always
-#
+  mongo-service:
+    container_name: mongo-service
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    networks:
+      - microservices-devops
+    restart: always
+
+  mongo-express:
+    container_name: mongo-express
+    image: mongo-express:latest
+    ports:
+      - '8081:8081'
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+    networks:
+      - microservices-devops
+    restart: always
+
   postgres-service:
     image: postgres:latest
     container_name: postgres-service
@@ -49,77 +50,80 @@ services:
       - '1025:1025'
     networks:
       - microservices-devops
-#
-#  mysql-service:
-#    container_name: mysql-service
-#    image: mysql:8.0
-#    environment:
-#      MYSQL_ROOT_PASSWORD: root
-#      MYSQL_DATABASE: cart_db
-#    ports:
-#      - '3306:3306'
-#    networks:
-#      - microservices-devops
-#    restart: always
-#    volumes:
-#      - mysql_data:/var/lib/mysql
-#    healthcheck:
-#      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", '-proot' ]
-#      interval: 10s
-#      timeout: 5s
-#      retries: 5
-#      start_period: 60s
-#
-#  authorization-server:
-#    container_name: authorization-server
-#    image: rupesh1997/authorization-server:1.0.0
-#    ports:
-#      - '9191:9191'
-#    networks:
-#      - microservices-devops
-#    restart: always
-#    depends_on:
-#      - postgres-service
-#
-#  cart-service:
-#    container_name: cart-service
-#    image: rupesh1997/cart-service:1.0.0
-#    ports:
-#      - '9292:9292'
-#    networks:
-#      - microservices-devops
-#    restart: always
-#    depends_on:
-#      - mysql-service
-#
-#  chat-service:
-#    container_name: chat-service
-#    image: rupesh1997/chat-service:1.0.0
-#    ports:
-#      - '9393:9393'
-#    networks:
-#      - microservices-devops
-#    restart: always
-#    depends_on:
-#      - mongo-service
-#
-#  config-service:
-#    container_name: config-service
-#    image: rupesh1997/config-service:1.0.0
-#    ports:
-#      - '8888:8888'
-#    networks:
-#      - microservices-devops
-#    restart: always
-#
-#  discovery-service:
-#    container_name: discovery-service
-#    image: rupesh1997/discovery-service:1.0.0
-#    ports:
-#      - '8761:8761'
-#    networks:
-#      - microservices-devops
-#
+
+  mysql-service:
+    container_name: mysql-service
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cart_db
+    ports:
+      - '3306:3306'
+    networks:
+      - microservices-devops
+    restart: always
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", '-proot' ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  discovery-service:
+    container_name: discovery-service
+    image: rupesh1997/discovery-service:1.0.0
+    ports:
+      - '8761:8761'
+    networks:
+      - microservices-devops
+    restart: always
+  #
+  #  authorization-server:
+  #    container_name: authorization-server
+  #    image: rupesh1997/authorization-server:1.0.0
+  #    ports:
+  #      - '9191:9191'
+  #    networks:
+  #      - microservices-devops
+  #    restart: always
+  #    depends_on:
+  #      - postgres-service
+  #
+  #  cart-service:
+  #    container_name: cart-service
+  #    image: rupesh1997/cart-service:1.0.0
+  #    ports:
+  #      - '9292:9292'
+  #    networks:
+  #      - microservices-devops
+  #    restart: always
+  #    depends_on:
+  #      - mysql-service
+  #
+  #  chat-service:
+  #    container_name: chat-service
+  #    image: rupesh1997/chat-service:1.0.0
+  #    ports:
+  #      - '9393:9393'
+  #    networks:
+  #      - microservices-devops
+  #    restart: always
+  #    depends_on:
+  #      - mongo-service
+  #
+  #  config-service:
+  #    container_name: config-service
+  #    image: rupesh1997/config-service:1.0.0
+  #    ports:
+  #      - '8888:8888'
+  #    networks:
+  #      - microservices-devops
+  #    restart: always
+
+
+
 #  gateway-service:
 #    container_name: gateway-service
 #    image: rupesh1997/gateway-service:1.0.0
@@ -253,10 +257,10 @@ services:
 #    restart: always
 
 volumes:
-#  mysql_data:
-#    driver: local
-#  kafka-data:
-#  redis-data:
+  mysql_data:
+    driver: local
+  #  kafka-data:
+  #  redis-data:
   postgres-data:
 
 networks:
