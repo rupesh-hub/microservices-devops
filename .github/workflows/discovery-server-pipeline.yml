@@ -9,8 +9,6 @@ on:
       - 'docker/backend/discovery-service/**'
       - 'docker-compose.yml'
       - '.github/workflows/discovery-server-*.yml'
-    paths-ignore:
-      - 'readme.txt'
 
 jobs:
   compile:
