@@ -1,5 +1,9 @@
-
 spring:
   profiles:
     active: dev
+  application:
+    name: authorization-server
+  config:
+    import: optional:configserver:http://localhost:8762/
 
+# http://localhost:8762/authorization-server/dev

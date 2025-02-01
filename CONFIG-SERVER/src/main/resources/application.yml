@@ -1,3 +1,16 @@
 spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/rupesh-hub/config-server
+          default-label: main
+          clone-on-start: true
+          search-paths: config
   profiles:
-    active: dev
+    active: git
+
+server:
+  port: 8888

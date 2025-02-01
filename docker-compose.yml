@@ -1,31 +1,31 @@
 version: "3.8"
 services:
 
-  mongo-service:
-    container_name: mongo-service
-    image: mongo:latest
-    ports:
-      - '27017:27017'
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin
-    networks:
-      - microservices-devops
-    restart: always
-
-  mongo-express:
-    container_name: mongo-express
-    image: mongo-express:latest
-    ports:
-      - '8081:8081'
-    environment:
-      ME_CONFIG_MONGODB_SERVER: mongo
-      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
-      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
-    networks:
-      - microservices-devops
-    restart: always
-
+#  mongo-service:
+#    container_name: mongo-service
+#    image: mongo:latest
+#    ports:
+#      - '27017:27017'
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: admin
+#      MONGO_INITDB_ROOT_PASSWORD: admin
+#    networks:
+#      - microservices-devops
+#    restart: always
+#
+#  mongo-express:
+#    container_name: mongo-express
+#    image: mongo-express:latest
+#    ports:
+#      - '8081:8081'
+#    environment:
+#      ME_CONFIG_MONGODB_SERVER: mongo
+#      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+#      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+#    networks:
+#      - microservices-devops
+#    restart: always
+#
   postgres-service:
     image: postgres:latest
     container_name: postgres-service
@@ -49,214 +49,214 @@ services:
       - '1025:1025'
     networks:
       - microservices-devops
-
-  mysql-service:
-    container_name: mysql-service
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: cart_db
-    ports:
-      - '3306:3306'
-    networks:
-      - microservices-devops
-    restart: always
-    volumes:
-      - mysql_data:/var/lib/mysql
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", '-proot' ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 60s
-
-  authorization-server:
-    container_name: authorization-server
-    image: rupesh1997/authorization-server:1.0.0
-    ports:
-      - '9191:9191'
-    networks:
-      - microservices-devops
-    restart: always
-    depends_on:
-      - postgres-service
-
-  cart-service:
-    container_name: cart-service
-    image: rupesh1997/cart-service:1.0.0
-    ports:
-      - '9292:9292'
-    networks:
-      - microservices-devops
-    restart: always
-    depends_on:
-      - mysql-service
-
-  chat-service:
-    container_name: chat-service
-    image: rupesh1997/chat-service:1.0.0
-    ports:
-      - '9393:9393'
-    networks:
-      - microservices-devops
-    restart: always
-    depends_on:
-      - mongo-service
-
-  config-service:
-    container_name: config-service
-    image: rupesh1997/config-service:1.0.0
-    ports:
-      - '8888:8888'
-    networks:
-      - microservices-devops
-    restart: always
-
-  discovery-service:
-    container_name: discovery-service
-    image: rupesh1997/discovery-service:1.0.0
-    ports:
-      - '8761:8761'
-    networks:
-      - microservices-devops
-
-  gateway-service:
-    container_name: gateway-service
-    image: rupesh1997/gateway-service:1.0.0
-    ports:
-      - '8080:8080'
-    networks:
-      - microservices-devops
-
-  inventory-service:
-    container_name: inventory-service
-    image: rupesh1997/inventory-service:1.0.0
-    ports:
-      - '8282:8282'
-    networks:
-      - microservices-devops
-    depends_on:
-      - postgres-service
-    restart: always
-
-  notification-service:
-    container_name: notification-service
-    image: rupesh1997/notification-service:1.0.0
-    ports:
-      - '8383:8383'
-    networks:
-      - microservices-devops
-    depends_on: mongo-service
-    restart: always
-
-  order-service:
-    container_name: order-service
-    image: rupesh1997/order-service:1.0.0
-    ports:
-      - '8484:8484'
-    networks:
-      - microservices-devops
-    depends_on: postgres-service
-    restart: always
-
-  payment-service:
-    container_name: payment-service
-    image: rupesh1997/payment-service:1.0.0
-    ports:
-      - '8585:8585'
-    networks:
-      - microservices-devops
-    depends_on: postgres-service
-    restart: always
-
-  review-service:
-    container_name: review-service
-    image: rupesh1997/review-service:1.0.0
-    ports:
-      - '8686:8686'
-    networks:
-      - microservices-devops
-    depends_on: mongo-service
-    restart: always
-
-  shipping-service:
-    container_name: shipping-service
-    image: rupesh1997/shipping-service:1.0.0
-    ports:
-      - '8787:8787'
-    networks:
-      - microservices-devops
-    depends_on: mysql-service
-    restart: always
-
-  user-service:
-    container_name: user-service
-    image: rupesh1997/user-service:1.0.0
-    ports:
-      - '8989:8989'
-    networks:
-      - microservices-devops
-    depends_on: postgres-service
-    restart: always
-
-  zookeeper:
-    image: confluentinc/cp-zookeeper:latest
-    container_name: zookeeper
-    restart: always
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - "2181:2181"
-    networks:
-      - microservices-devops
-
-  kafka:
-    image: confluentinc/cp-kafka:latest
-    container_name: kafka
-    restart: always
-    depends_on:
-      - zookeeper
-    ports:
-      - "9092:9092"
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    volumes:
-      - kafka-data:/var/lib/kafka/data
-    networks:
-      - microservices-devops
-
-  redis:
-    image: redis:latest
-    container_name: redis
-    restart: always
-    ports:
-      - "6379:6379"
-    command: redis-server --appendonly yes
-    volumes:
-      - redis-data:/data
-    networks:
-      - microservices-devops
-
-  frontend:
-    container_name: frontend
-    image: rupesh1997/frontend:latest
-    ports:
-      - "8080:80"
-    networks:
-      - devops
-    depends_on:
-      - backend
-    restart: always
+#
+#  mysql-service:
+#    container_name: mysql-service
+#    image: mysql:8.0
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#      MYSQL_DATABASE: cart_db
+#    ports:
+#      - '3306:3306'
+#    networks:
+#      - microservices-devops
+#    restart: always
+#    volumes:
+#      - mysql_data:/var/lib/mysql
+#    healthcheck:
+#      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", '-proot' ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#      start_period: 60s
+#
+#  authorization-server:
+#    container_name: authorization-server
+#    image: rupesh1997/authorization-server:1.0.0
+#    ports:
+#      - '9191:9191'
+#    networks:
+#      - microservices-devops
+#    restart: always
+#    depends_on:
+#      - postgres-service
+#
+#  cart-service:
+#    container_name: cart-service
+#    image: rupesh1997/cart-service:1.0.0
+#    ports:
+#      - '9292:9292'
+#    networks:
+#      - microservices-devops
+#    restart: always
+#    depends_on:
+#      - mysql-service
+#
+#  chat-service:
+#    container_name: chat-service
+#    image: rupesh1997/chat-service:1.0.0
+#    ports:
+#      - '9393:9393'
+#    networks:
+#      - microservices-devops
+#    restart: always
+#    depends_on:
+#      - mongo-service
+#
+#  config-service:
+#    container_name: config-service
+#    image: rupesh1997/config-service:1.0.0
+#    ports:
+#      - '8888:8888'
+#    networks:
+#      - microservices-devops
+#    restart: always
+#
+#  discovery-service:
+#    container_name: discovery-service
+#    image: rupesh1997/discovery-service:1.0.0
+#    ports:
+#      - '8761:8761'
+#    networks:
+#      - microservices-devops
+#
+#  gateway-service:
+#    container_name: gateway-service
+#    image: rupesh1997/gateway-service:1.0.0
+#    ports:
+#      - '8080:8080'
+#    networks:
+#      - microservices-devops
+#
+#  inventory-service:
+#    container_name: inventory-service
+#    image: rupesh1997/inventory-service:1.0.0
+#    ports:
+#      - '8282:8282'
+#    networks:
+#      - microservices-devops
+#    depends_on:
+#      - postgres-service
+#    restart: always
+#
+#  notification-service:
+#    container_name: notification-service
+#    image: rupesh1997/notification-service:1.0.0
+#    ports:
+#      - '8383:8383'
+#    networks:
+#      - microservices-devops
+#    depends_on: mongo-service
+#    restart: always
+#
+#  order-service:
+#    container_name: order-service
+#    image: rupesh1997/order-service:1.0.0
+#    ports:
+#      - '8484:8484'
+#    networks:
+#      - microservices-devops
+#    depends_on: postgres-service
+#    restart: always
+#
+#  payment-service:
+#    container_name: payment-service
+#    image: rupesh1997/payment-service:1.0.0
+#    ports:
+#      - '8585:8585'
+#    networks:
+#      - microservices-devops
+#    depends_on: postgres-service
+#    restart: always
+#
+#  review-service:
+#    container_name: review-service
+#    image: rupesh1997/review-service:1.0.0
+#    ports:
+#      - '8686:8686'
+#    networks:
+#      - microservices-devops
+#    depends_on: mongo-service
+#    restart: always
+#
+#  shipping-service:
+#    container_name: shipping-service
+#    image: rupesh1997/shipping-service:1.0.0
+#    ports:
+#      - '8787:8787'
+#    networks:
+#      - microservices-devops
+#    depends_on: mysql-service
+#    restart: always
+#
+#  user-service:
+#    container_name: user-service
+#    image: rupesh1997/user-service:1.0.0
+#    ports:
+#      - '8989:8989'
+#    networks:
+#      - microservices-devops
+#    depends_on: postgres-service
+#    restart: always
+#
+#  zookeeper:
+#    image: confluentinc/cp-zookeeper:latest
+#    container_name: zookeeper
+#    restart: always
+#    environment:
+#      ZOOKEEPER_CLIENT_PORT: 2181
+#      ZOOKEEPER_TICK_TIME: 2000
+#    ports:
+#      - "2181:2181"
+#    networks:
+#      - microservices-devops
+#
+#  kafka:
+#    image: confluentinc/cp-kafka:latest
+#    container_name: kafka
+#    restart: always
+#    depends_on:
+#      - zookeeper
+#    ports:
+#      - "9092:9092"
+#    environment:
+#      KAFKA_BROKER_ID: 1
+#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#    volumes:
+#      - kafka-data:/var/lib/kafka/data
+#    networks:
+#      - microservices-devops
+#
+#  redis:
+#    image: redis:latest
+#    container_name: redis
+#    restart: always
+#    ports:
+#      - "6379:6379"
+#    command: redis-server --appendonly yes
+#    volumes:
+#      - redis-data:/data
+#    networks:
+#      - microservices-devops
+#
+#  frontend:
+#    container_name: frontend
+#    image: rupesh1997/frontend:latest
+#    ports:
+#      - "8080:80"
+#    networks:
+#      - devops
+#    depends_on:
+#      - backend
+#    restart: always
 
 volumes:
-  mysql_data:
-    driver: local
-  kafka-data:
-  redis-data:
+#  mysql_data:
+#    driver: local
+#  kafka-data:
+#  redis-data:
   postgres-data:
 
 networks:
