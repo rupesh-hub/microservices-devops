@@ -31,7 +31,7 @@ public class AuthorizationServerSecurityConfiguration {
 
     private static final String[] PUBLIC_URI = {
             "/login", "/css/**", "/js/**", "/authentication/**", "/ping", "/client/**"
-            , "/login", "/client/register", "/roles", "/users/register", "/users/by.username/**"
+            , "/login", "/client/register", "/roles", "/users/register", "/users/by.username/**","/ping"
     };
 
     @Bean
