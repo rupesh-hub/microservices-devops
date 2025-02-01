@@ -4,7 +4,15 @@ on:
     branches:
       - main
     paths:
-      - 'discovery-service/**'
+      - DISCOVERY-SERVER/**
+      - docker/backend/discovery-service/**
+      - docker-compose.yml
+      - .github/workflows/discovery-server-*.yml
+    paths-ignore:
+      - 'README.md'
+      - 'helm/**'
+      - 'readme.txt'
+
 jobs:
   compile:
     runs-on: ubuntu-latest
@@ -15,4 +23,8 @@ jobs:
         with:
           fetch-depth: 0
 
-
+      - name: Debugging
+        run: |
+          echo "This job was triggered because changes were made in the discovery-service folder!"
+          echo "Changed files:"
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }}
