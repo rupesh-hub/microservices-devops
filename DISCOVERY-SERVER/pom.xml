@@ -54,7 +54,7 @@
 	</dependencyManagement>
 
 	<build>
-		<finalName>discovery-server-${version}</finalName>
+		<finalName>discovery-service-${version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

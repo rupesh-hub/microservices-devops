@@ -2,7 +2,44 @@ spring:
   application:
     name: review-service
 
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/review_db
+      username: mongoose
+      password: mongoose
+      authentication-database: admin
+
 server:
-  port: 9990
+  port: 8686
   servlet:
     context-path: /api/v1.0.0/review-service
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: never
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+
+# OpenAPI/Swagger Configuration
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    operationsSorter: method
+  cache:
+    disabled: true

@@ -1,11 +1,5 @@
-spring:
-  application:
-    name: authorization-server
 
+spring:
   profiles:
     active: dev
 
-server:
-  port: 9191
-  servlet:
-    context-path: /api/v1.0.0

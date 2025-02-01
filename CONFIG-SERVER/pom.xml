@@ -53,7 +53,7 @@
 	</dependencyManagement>
 
 	<build>
-		<finalName>config-server-${version}</finalName>
+		<finalName>config-service-${version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

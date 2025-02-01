@@ -1,8 +1,19 @@
 server:
   servlet:
     context-path: /api/v1.0.0/notification-service
-  port: 9898
+  port: 8383
 
 spring:
   application:
     name: notification-service
+
+  #  data:
+  #    mongodb:
+  #      uri: mongodb://admin:password@localhost:27017/notification_db
+  #      database: notification_db
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/notification_db
+      username: mongoose
+      password: mongoose
+      authentication-database: admin

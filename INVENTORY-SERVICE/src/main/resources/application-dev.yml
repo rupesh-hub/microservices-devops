@@ -2,7 +2,7 @@ server:
   servlet:
     context-path: /api/v1.0.0/inventory-service
 
-  port: 9494
+  port: 8282
 
 application:
   cors:
