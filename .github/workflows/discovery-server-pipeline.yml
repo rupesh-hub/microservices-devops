@@ -28,7 +28,7 @@ jobs:
 
       - name: Compile project
         run: |
-          cd backend
+          cd DISCOVERY-SERVER
           ./mvnw clean compile
 
   unit-tests:
@@ -48,7 +48,7 @@ jobs:
 
       - name: Running unit tests
         run: |
-          cd backend
+          cd DISCOVERY-SERVER
           ./mvnw clean test
 
   build:
@@ -69,7 +69,7 @@ jobs:
 
       - name: Build project
         run: |
-          cd backend
+          cd DISCOVERY-SERVER
           ./mvnw clean package
 
   build-image:
@@ -90,13 +90,13 @@ jobs:
 
       - name: Build project
         run: |
-          cd backend
+          cd DISCOVERY-SERVER
           ./mvnw clean package
 
       - name: Extract project version
         id: extract_version
         run: |
-          cd backend
+          cd DISCOVERY-SERVER
           echo "VERSION=$(./mvnw -q -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
