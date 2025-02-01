@@ -1,8 +1,2 @@
-spring:
-  application:
-    name: cart-service
 
-server:
-  port: 9292
-  servlet:
-    context-path: /api/v1.0.0
+

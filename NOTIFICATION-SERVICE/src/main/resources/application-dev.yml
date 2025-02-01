@@ -2,18 +2,60 @@ server:
   servlet:
     context-path: /api/v1.0.0/notification-service
   port: 8383
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: never
 
 spring:
   application:
     name: notification-service
 
+application:
+  cors:
+    origins: http://localhost:4200,http://localhost:8080
+
   #  data:
   #    mongodb:
   #      uri: mongodb://admin:password@localhost:27017/notification_db
   #      database: notification_db
+  
   data:
     mongodb:
       uri: mongodb://localhost:27017/notification_db
       username: mongoose
       password: mongoose
       authentication-database: admin
+
+# OpenAPI/Swagger Configuration
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    operationsSorter: method
+  cache:
+    disabled: true
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace
+        SQL: debug

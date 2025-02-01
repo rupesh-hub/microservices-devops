@@ -2,6 +2,10 @@ server:
   port: 8787
   servlet:
     context-path: /api/v1.0.0/shipping-service
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: never
 
 spring:
   application:
@@ -65,3 +69,10 @@ management:
       enabled: true
     prometheus:
       enabled: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace
+        SQL: debug

@@ -68,3 +68,10 @@ management:
       enabled: true
     prometheus:
       enabled: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace
+        SQL: debug

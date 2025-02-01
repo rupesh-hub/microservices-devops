@@ -43,3 +43,10 @@ springdoc:
     operationsSorter: method
   cache:
     disabled: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace
+        SQL: debug

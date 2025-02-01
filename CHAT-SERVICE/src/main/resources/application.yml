@@ -1,12 +1,4 @@
 spring:
-  application:
-    name: chat-service
-
   profiles:
     active: dev
-
-server:
-  port: 9393
-  servlet:
-    context-path: /api/v1.0.0
 
