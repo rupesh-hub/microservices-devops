@@ -30,7 +30,7 @@ public class SecurityConfiguration {
             c.configurationSource(source);
         });
 
-        http.authorizeHttpRequests(auth-> auth.requestMatchers("/test").permitAll().anyRequest().authenticated())
+        http.authorizeHttpRequests(auth-> auth.requestMatchers("/test","/ping").permitAll().anyRequest().authenticated())
                 .oauth2ResourceServer(resource-> resource.jwt(jwt->jwt.jwkSetUri("http://localhost:9191/oauth2/jwks")));
         return http.build();
     }
