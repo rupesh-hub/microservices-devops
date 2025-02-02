@@ -5,10 +5,10 @@ on:
     branches:
       - main
     paths:
-      - 'INVENTORY-SERVICE/**'
-      - 'docker/backend/inventory-service/**'
+      - 'NOTIFICATION-SERVICE/**'
+      - 'docker/backend/notification-service/**'
       - 'docker-compose.yml'
-      - '.github/workflows/inventory-service-*.yml'
+      - '.github/workflows/notification-service-*.yml'
 
 jobs:
   test-and-build:
@@ -31,13 +31,13 @@ jobs:
 
       - name: Run tests and build
         run: |
-          cd INVENTORY-SERVICE
+          cd NOTIFICATION-SERVICE
           ./mvnw clean verify package
 
       - name: Extract version
         id: get_version  # Add ID to reference this step
         run: |
-          cd INVENTORY-SERVICE
+          cd NOTIFICATION-SERVICE
           VERSION=$(./mvnw -q -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec)
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Extracted version: $VERSION"  # Debug output
@@ -62,13 +62,13 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
-          context: INVENTORY-SERVICE
-          file: docker/backend/inventory-service/Dockerfile
+          context: NOTIFICATION-SERVICE
+          file: docker/backend/notification-service/Dockerfile
           push: true
           platforms: linux/amd64
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/inventory-service:${{ needs.test-and-build.outputs.version }}
-            ${{ secrets.DOCKER_USERNAME }}/inventory-service:latest
+            ${{ secrets.DOCKER_USERNAME }}/notification-service:${{ needs.test-and-build.outputs.version }}
+            ${{ secrets.DOCKER_USERNAME }}/notification-service:latest
           build-args: |
             PROFILE=dev
             APP_VERSION=${{ needs.test-and-build.outputs.version }}
