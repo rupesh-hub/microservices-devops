@@ -54,13 +54,13 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
-          context: INVENTORY-SERVER
+          context: INVENTORY-SERVICE
           file: docker/backend/inventory-service/Dockerfile
           push: true
           platforms: linux/amd64
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/config-service:${{ needs.test-and-build.outputs.VERSION }}
-            ${{ secrets.DOCKER_USERNAME }}/config-service:${{ github.run_id }}
+            ${{ secrets.DOCKER_USERNAME }}/inventory-service:${{ needs.test-and-build.outputs.VERSION }}
+            ${{ secrets.DOCKER_USERNAME }}/inventory-service:${{ github.run_id }}
           build-args: |
             PROFILE=dev
             APP_VERSION=${{ needs.test-and-build.outputs.VERSION }}
