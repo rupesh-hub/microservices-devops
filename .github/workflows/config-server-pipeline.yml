@@ -37,7 +37,9 @@ jobs:
     name: Compile Project
     steps:
       - name: Compile project
-        run: mvn compile
+        run: |
+          cd CONFIG-SERVER
+          ./mvnw clean compile
 
   unit-tests:
     runs-on: ubuntu-latest
@@ -45,7 +47,9 @@ jobs:
     name: Run Unit Tests
     steps:
       - name: Run unit tests
-        run: mvn test
+        run: |
+          cd CONFIG-SERVER
+          ./mvnw clean test
 
   build:
     runs-on: ubuntu-latest
@@ -53,7 +57,9 @@ jobs:
     name: Build Project
     steps:
       - name: Build project
-        run: mvn package -DskipTests
+        run: |
+          cd CONFIG-SERVER
+          ./mvnw package -DskipTests
 
   build-image:
     runs-on: ubuntu-latest
@@ -77,4 +83,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: your-docker-hub-username/config-server:${{ env.VERSION }}, your-docker-hub-username/config-server:latest
+          tags: rupesh1997/config-server:${{ env.VERSION }}, rupesh1997/config-server:latest
