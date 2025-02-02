@@ -1,4 +1,4 @@
-name: CONFIG SERVER CI
+name: DISCOVERY SERVER CI
 
 on:
   push:
@@ -11,31 +11,21 @@ on:
       - '.github/workflows/config-server-*.yml'
 
 jobs:
-  setup:
+  compile:
     runs-on: ubuntu-latest
-    name: Setup Environment
+    name: Compile
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Setup Java Environment
-        uses: actions/setup-java@v3
+      - name: Setup java environment
+        uses: actions/setup-java@v4
         with:
           distribution: 'corretto'
           java-version: '17'
 
-      - name: Cache Dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2  # Cache Maven dependencies
-          key: maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: maven-
-
-  compile:
-    runs-on: ubuntu-latest
-    needs: setup
-    name: Compile Project
-    steps:
       - name: Compile project
         run: |
           cd CONFIG-SERVER
@@ -43,44 +33,89 @@ jobs:
 
   unit-tests:
     runs-on: ubuntu-latest
-    needs: compile
-    name: Run Unit Tests
+    name: Unit Tests
     steps:
-      - name: Run unit tests
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup java environment
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+
+      - name: Running unit tests
         run: |
           cd CONFIG-SERVER
           ./mvnw clean test
 
   build:
     runs-on: ubuntu-latest
-    needs: unit-tests
-    name: Build Project
+    name: Build
+    needs: [ compile, unit-tests ]
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup java environment
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+
       - name: Build project
         run: |
           cd CONFIG-SERVER
-          ./mvnw package -DskipTests
+          ./mvnw clean package
 
   build-image:
     runs-on: ubuntu-latest
-    needs: build
-    name: Build & Push Docker Image
+    name: Build Docker Image
+    needs: [ build ]
     steps:
-      - name: Extract Version
-        run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Setup Docker Buildx
+      - name: Setup java environment
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+
+      - name: Build project
+        run: |
+          cd CONFIG-SERVER
+          ./mvnw clean package
+
+      - name: Extract project version
+        id: extract_version
+        run: |
+          cd CONFIG-SERVER
+          echo "VERSION=$(./mvnw -q -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Login to Docker Hub
+      - name: Login to docker hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and Push Image
+      - name: Build and push image to dockerhub
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: CONFIG-SERVER
+          file: docker/backend/discovery-service/Dockerfile
           push: true
-          tags: rupesh1997/config-server:${{ env.VERSION }}, rupesh1997/config-server:latest
+          platforms: linux/amd64
+          tags: ${{ secrets.DOCKER_USERNAME }}/config-service:${{ steps.extract_version.outputs.VERSION }},${{ secrets.DOCKER_USERNAME }}/config-service:${{github.run_id}}
+          build-args: |
+            PROFILE=dev
+            APP_VERSION=${{ steps.extract_version.outputs.VERSION }}
