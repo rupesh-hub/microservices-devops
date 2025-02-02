@@ -1,0 +1,66 @@
+name: CONFIG SERVER CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'INVENTORY-SERVICE/**'
+      - 'docker/backend/inventory-service/**'
+      - 'docker-compose.yml'
+      - '.github/workflows/inventory-service-*.yml'
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    name: Test and Build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+          cache: 'maven'  # Added Maven caching
+
+      - name: Run tests and build
+        id: build
+        run: |
+          cd INVENTORY-SERVER
+          ./mvnw clean verify package
+          echo "VERSION=$(./mvnw -q -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+
+  docker-publish:
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    name: Build and Publish Docker Image
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: INVENTORY-SERVER
+          file: docker/backend/inventory-service/Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/config-service:${{ needs.test-and-build.outputs.VERSION }}
+            ${{ secrets.DOCKER_USERNAME }}/config-service:${{ github.run_id }}
+          build-args: |
+            PROFILE=dev
+            APP_VERSION=${{ needs.test-and-build.outputs.VERSION }}
