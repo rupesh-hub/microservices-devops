@@ -30,7 +30,7 @@ jobs:
       - name: Run tests and build
         id: build
         run: |
-          cd INVENTORY-SERVER
+          cd INVENTORY-SERVICE
           ./mvnw clean verify package
           echo "VERSION=$(./mvnw -q -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
 
