@@ -14,6 +14,8 @@ jobs:
   test-and-build:
     runs-on: ubuntu-latest
     name: Test and Build
+    outputs:
+      version: ${{ steps.get_version.outputs.VERSION }}  # Add outputs section
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,14 +27,20 @@ jobs:
         with:
           distribution: 'corretto'
           java-version: '17'
-          cache: 'maven'  # Added Maven caching
+          cache: 'maven'
 
       - name: Run tests and build
-        id: build
         run: |
           cd INVENTORY-SERVICE
           ./mvnw clean verify package
-          echo "VERSION=$(./mvnw -q -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+
+      - name: Extract version
+        id: get_version  # Add ID to reference this step
+        run: |
+          cd INVENTORY-SERVICE
+          VERSION=$(./mvnw -q -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec)
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Extracted version: $VERSION"  # Debug output
 
   docker-publish:
     needs: test-and-build
@@ -59,8 +67,8 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/inventory-service:${{ needs.test-and-build.outputs.VERSION }}
-            ${{ secrets.DOCKER_USERNAME }}/inventory-service:${{ github.run_id }}
+            ${{ secrets.DOCKER_USERNAME }}/inventory-service:${{ needs.test-and-build.outputs.version }}
+            ${{ secrets.DOCKER_USERNAME }}/inventory-service:latest
           build-args: |
             PROFILE=dev
-            APP_VERSION=${{ needs.test-and-build.outputs.VERSION }}
+            APP_VERSION=${{ needs.test-and-build.outputs.version }}
