@@ -56,7 +56,7 @@ jobs:
           ssh-private-key: ${{ secrets.AZURE_SSH_KEY }}
 
       - name: Create deployment folder
-        run: ssh -o StrictHostKeyChecking=no ${{ secrets. }}@${{ secrets.AZURE_IP }} "mkdir -p ci-cd"
+        run: ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_USERNAME }}@${{ secrets.AZURE_IP }} "mkdir -p ci-cd"
 
       - name: Copy compose file
         run: scp docker-compose.yml ${{ secrets.AZURE_USERNAME }}@${{ secrets.AZURE_IP }}:ci-cd/docker-compose.yml
