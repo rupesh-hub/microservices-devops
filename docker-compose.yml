@@ -13,6 +13,11 @@ services:
     networks:
       - microservices-devops
     restart: always
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh admin --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   mongo-express:
     container_name: mongo-express
@@ -20,7 +25,7 @@ services:
     ports:
       - '8081:8081'
     environment:
-      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_SERVER: mongo-service
       ME_CONFIG_MONGODB_ADMINUSERNAME: admin
       ME_CONFIG_MONGODB_ADMINPASSWORD: admin
     networks:
@@ -41,6 +46,11 @@ services:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - microservices-devops
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   maildev:
     container_name: maildev
@@ -65,7 +75,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", '-proot' ]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -148,7 +158,8 @@ services:
       - '8383:8383'
     networks:
       - microservices-devops
-    depends_on: mongo-service
+    depends_on:
+      - mongo-service
     restart: always
 
   order-service:
@@ -158,7 +169,8 @@ services:
       - '8484:8484'
     networks:
       - microservices-devops
-    depends_on: postgres-service
+    depends_on:
+      - postgres-service
     restart: always
 
   payment-service:
@@ -168,7 +180,8 @@ services:
       - '8585:8585'
     networks:
       - microservices-devops
-    depends_on: postgres-service
+    depends_on:
+      - postgres-service
     restart: always
 
   review-service:
@@ -178,7 +191,8 @@ services:
       - '8686:8686'
     networks:
       - microservices-devops
-    depends_on: mongo-service
+    depends_on:
+      - mongo-service
     restart: always
 
   shipping-service:
@@ -188,7 +202,8 @@ services:
       - '9494:9494'
     networks:
       - microservices-devops
-    depends_on: mysql-service
+    depends_on:
+      - mysql-service
     restart: always
 
   user-service:
@@ -198,7 +213,8 @@ services:
       - '8989:8989'
     networks:
       - microservices-devops
-    depends_on: postgres-service
+    depends_on:
+      - postgres-service
     restart: always
 
   zookeeper:
@@ -249,9 +265,9 @@ services:
     ports:
       - "8080:80"
     networks:
-      - devops
+      - microservices-devops
     depends_on:
-      - backend
+      - gateway-service
     restart: always
 
 volumes:
