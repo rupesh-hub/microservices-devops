@@ -1,4 +1,4 @@
-name: FRONTEND PIPELINE
+name: FRONTEND CI/CD PIPELINE
 on:
   push:
     branches:
