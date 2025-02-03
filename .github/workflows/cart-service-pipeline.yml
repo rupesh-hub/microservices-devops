@@ -1,4 +1,4 @@
-name: CONFIG SERVER CI
+name: CART SERVICE CI/CD
 
 on:
   push:
@@ -76,7 +76,7 @@ jobs:
   deploy:
     name: Deploy cart service
     runs-on: self-hosted
-    needs: [ build-image ]
+    needs: [ docker-publish ]
     steps:
       - name: Add ssh key
         uses: webfactory/ssh-agent@v0.5.3

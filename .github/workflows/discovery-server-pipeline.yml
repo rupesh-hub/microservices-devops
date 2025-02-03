@@ -1,4 +1,4 @@
-name: DISCOVERY SERVER CI
+name: DISCOVERY SERVER CI/CD
 
 on:
   push:

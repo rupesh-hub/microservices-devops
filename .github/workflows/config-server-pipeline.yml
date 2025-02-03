@@ -1,4 +1,4 @@
-name: DISCOVERY SERVER CI
+name: CONFIG SERVER CI/CD
 
 on:
   push:
