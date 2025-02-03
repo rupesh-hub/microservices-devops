@@ -271,11 +271,11 @@ services:
     restart: always
 
 volumes:
-#  mysql_data:
-#    driver: local
-#  kafka-data:
-#  redis-data:
-#  postgres-data:
+  mysql_data:
+    driver: local
+  kafka-data:
+  redis-data:
+  postgres-data:
 
 networks:
   microservices-devops:
