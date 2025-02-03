@@ -62,7 +62,7 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
-          context: gateway-SERVICE
+          context: GATEWAY-SERVICE
           file: docker/backend/gateway-service/Dockerfile
           push: true
           platforms: linux/amd64
