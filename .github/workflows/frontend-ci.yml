@@ -1,0 +1,73 @@
+name: FRONTEND PIPELINE
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - frontend/**
+      - docker/frontend/**
+      - docker-compose.yml
+      - .github/workflows/frontend-*.yml
+
+jobs:
+  build-image:
+    runs-on: self-hosted
+    name: Build frontend docker image
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract project version
+        id: project-version
+        run: |
+          cd frontend
+          echo "VERSION=$(jq -r '.version' package.json)" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to docker hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: frontend
+          file: docker/frontend/Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/frontend:${{ steps.project-version.outputs.VERSION }}
+            ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+
+  deploy:
+    name: Deploy frontend
+    runs-on: self-hosted
+    needs: [build-image]
+    steps:
+      - name: Add ssh key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.AZURE_SSH_KEY }}
+
+      - name: Create deployment folder
+        run: ssh -o StrictHostKeyChecking=no ${{ secrets. }}@${{ secrets.AZURE_IP }} "mkdir -p ci-cd"
+
+      - name: Copy compose file
+        run: scp docker-compose.yml ${{ secrets.AZURE_USERNAME }}@${{ secrets.AZURE_IP }}:ci-cd/docker-compose.yml
+
+      - name: Set ENV variable and deploy
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_USERNAME }}@${{ secrets.AZURE_IP }} <<EOF
+            cd ci-cd
+            docker-compose -f docker-compose.yml pull -q
+            docker-compose -f docker-compose.yml up -d
+          EOF
+
+# sudo apt-get install docker.io
+# sudo usermod -aG docker $USER && newgrp docker
