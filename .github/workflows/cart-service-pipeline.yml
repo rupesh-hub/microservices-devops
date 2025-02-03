@@ -62,7 +62,7 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
-          context: cart-SERVICE
+          context: CART-SERVICE
           file: docker/backend/cart-service/Dockerfile
           push: true
           platforms: linux/amd64
